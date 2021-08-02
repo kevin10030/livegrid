@@ -1,0 +1,24 @@
+{
+    "boardSize":"S",
+
+    "demo":0,
+
+    "noiseType":0,
+    "speed":1,
+    "scale":2,
+    "red":100,
+    "green":100,
+    "blue":100,
+    "brightness":0,
+    "contrast":50,
+
+    "selectedImageIndex":0,
+    "selectedVideoIndex":0,
+    
+    "textContent":"example text",
+    "textFontSize":1,
+    "textFontType":1,
+    "textRed":100,
+    "textGreen":100,
+    "textBlue":100
+}
