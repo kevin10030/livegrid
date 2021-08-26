@@ -1,5 +1,5 @@
 CFLAGS=-Wall -O3 -g -Wextra -Wno-unused-parameter
-CXXFLAGS=$(CFLAGS)
+CXXFLAGS=-O3 -W -Wall -Wextra -Wno-unused-parameter -D_FILE_OFFSET_BITS=64
 OBJECTS=demo-main.o noise.o
 BINARIES=demo noise 
 
@@ -24,7 +24,7 @@ $(RGB_LIBRARY): FORCE
 	$(MAKE) -C $(RGB_LIBDIR)
 
 demo : demo-main.o $(RGB_LIBRARY)
-	$(CXX) $< -o $@ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS) $(MAGICK_LDFLAGS) $(AV_LDFLAGS)
 
 # minimal-example : minimal-example.o
 noise : noise.o
@@ -34,7 +34,7 @@ noise : noise.o
 	$(CXX) $< -o $@ $(LDFLAGS)
 
 %.o : %.cc
-	$(CXX) -I$(RGB_INCDIR) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) -I$(RGB_INCDIR) $(CXXFLAGS) $(MAGICK_CXXFLAGS) $(AV_CXXFLAGS) -c -o $@ $<
 
 %.o : %.cpp compiler-flags
 	$(CC)  -I$(INCDIR) $(CFLAGS) -c -o $@ $<
