@@ -90,9 +90,9 @@ int demo = -1;
 // enum {PatternDemo, ImageDemo, VideoDemo, TextDemo};
 
 int noiseType = 0; 
-#define Simplex 0
-#define Cellular 1
-#define Cubic 2
+#define SimplexType 0
+#define CellularType 1
+#define CubicType 2
 // enum {Simplex, Cellular, Cubic};
 
 std::string imageList[] = {"images/1.jpeg", "images/2.jpeg", "images/3.jpeg", "images/4.jpeg", "images/5.jpeg", "images/6.jpeg"};
@@ -262,12 +262,12 @@ static int TextViewer() {
   fontPathStr += fontTypeList[textFontType];
 
   std::string colorStr = std::to_string(textRed) + "," + std::to_string(textGreen) + "," + std::to_string(textBlue);
-  char *argv[] = {"./demo", "-f", fontPathStr.c_str(), "-C", colorStr.c_str()};
+  const char *argv[] = { "./demo", "-f", fontPathStr.c_str(), "-C", colorStr.c_str()};
 // sudo ./text-example -f ../fonts/8x13.bdf -C 255,255,0
 
   RGBMatrix::Options matrix_options;
   rgb_matrix::RuntimeOptions runtime_opt;
-  if (!rgb_matrix::ParseOptionsFromFlags(&argc, &argv,
+  if (!rgb_matrix::ParseOptionsFromFlags(&argc, (char***)&argv,
                                          &matrix_options, &runtime_opt)) {
     return text_usage(argv[0]);
   }
@@ -396,11 +396,11 @@ static int TextViewer() {
   int curTextFontType = textFontType;
   int curTextRed = textRed;
   int curTextGreen = textGreen;
-  int curTextBlue - textBlue;
+  int curTextBlue = textBlue;
 
   char line[1024];
-  while ((demo == TextDemo) && (curTextFontSize == textFontSize) && (curTextFontType == textFontType) && (curTextRed == textRed) && (curTextGreen == textGreen) && (curTextBlue == textBlue) &&　!interrupt_received) {
-    std::strcpy (line, textContent.c_str());
+  while ((demo == TextDemo) && (curTextFontSize == textFontSize) && (curTextFontType == textFontType) && (curTextRed == textRed) && (curTextGreen == textGreen) && (curTextBlue == textBlue) && !interrupt_received) {
+    strcpy(line, textContent.c_str());
     // fgets(line, sizeof(line), stdin)
     const size_t last = strlen(line);
     if (last > 0) line[last - 1] = '\0';  // remove newline.
@@ -540,7 +540,7 @@ static int VideoViewer()
 
   RGBMatrix::Options matrix_options;
   rgb_matrix::RuntimeOptions runtime_opt;
-  if (!rgb_matrix::ParseOptionsFromFlags(&argc, &argv,
+  if (!rgb_matrix::ParseOptionsFromFlags(&argc, (char***)&argv,
                                          &matrix_options, &runtime_opt)) {
     return video_usage(argv[0]);
   }
@@ -1033,12 +1033,12 @@ static int ImageViewer()
 {
   //  needtouch, need to set argc and argv
   int argc = 3;
-  char *argv[] = {"./demo", "-f", imageList[selectedImageIndex].c_str()};
+  char *argv[] = {"./demo", "-f", imageList[selectedImageIndex].c_str()};  
   Magick::InitializeMagick(*argv);
 
   RGBMatrix::Options matrix_options;
   rgb_matrix::RuntimeOptions runtime_opt;
-  if (!rgb_matrix::ParseOptionsFromFlags(&argc, &argv,
+  if (!rgb_matrix::ParseOptionsFromFlags(&argc, (char***)(&argv),
                                          &matrix_options, &runtime_opt)) {
     return image_usage(argv[0]);
   }
@@ -1323,7 +1323,7 @@ public:
     canvas()->Fill(0, 0, 0);  
     FastNoise noise;
     noise.SetNoiseType(FastNoise::Simplex);
-    while ((demo==PatternDemo) && (noiseType==Simplex) && running() && !interrupt_received) {    
+    while ((demo==PatternDemo) && (noiseType==SimplexType) && running() && !interrupt_received) {    
       parseJson();    
       for(float i=0.0f; i<canvas()->width(); i+=1.0f) {
         for(float j=0.0f; j<canvas()->height(); j+=1.0f) {
@@ -1351,7 +1351,7 @@ public:
     canvas()->Fill(0, 0, 0);  
     FastNoise noise;
     noise.SetNoiseType(FastNoise::Cellular);
-    while ((demo==PatternDemo) && (noiseType==Cellular) && running() && !interrupt_received) {    
+    while ((demo==PatternDemo) && (noiseType==CellularType) && running() && !interrupt_received) {    
       parseJson();    
       for(float i=0.0f; i<canvas()->width(); i+=1.0f) {
         for(float j=0.0f; j<canvas()->height(); j+=1.0f) {
@@ -1379,7 +1379,7 @@ public:
     canvas()->Fill(0, 0, 0);  
     FastNoise noise;
     noise.SetNoiseType(FastNoise::Cubic);
-    while ((demo==PatternDemo) && (noiseType==Cubic) && running() && !interrupt_received) {    
+    while ((demo==PatternDemo) && (noiseType==CubicType) && running() && !interrupt_received) {    
       parseJson();    
       for(float i=0.0f; i<canvas()->width(); i+=1.0f) {
         for(float j=0.0f; j<canvas()->height(); j+=1.0f) {
@@ -1442,13 +1442,13 @@ static int NoisePatternGenerator()
   ThreadedCanvasManipulator *image_gen = NULL;
   switch(noiseType)  //noiseType is gotten by parsing json
   {
-    case Simplex:
+    case SimplexType:
       image_gen = new SimplexNoiseGenerator(canvas);
       break;
-    case Cellular:
+    case CellularType:
       image_gen = new CellularNoiseGenerator(canvas);
       break;
-    case Cubic:
+    case CubicType:
       image_gen = new CubicNoiseGenerator(canvas);
       break;
   }
