@@ -145,7 +145,7 @@ static void parseJson()
     result.push_back(substr);
   }
 
-  for(int i = 0; i<result.size(); i++) {
+  for(int i = 0; i<static_cast<int>(result.size()); i++) {
     if(i == 0) {  //boardSize
       boardSize = result.at(0).substr(result.at(0).find(":") + 1);
     } 
@@ -300,7 +300,7 @@ static int TextViewer() {
   int letter_spacing = 0;
 
   int opt;
-  while ((opt = getopt(argc, argv, "x:y:f:C:B:O:b:S:F:")) != -1) {
+  while ((opt = getopt(argc, const_cast<char* const *>(argv), "x:y:f:C:B:O:b:S:F:")) != -1) {
     switch (opt) {
     case 'b': brightness = atoi(optarg); break;
     case 'x': x_orig = atoi(optarg); break;
@@ -536,7 +536,7 @@ static int VideoViewer()
 {
   //needtouch, making argc and argv
   int argc = 3;
-  char *argv[] = {"./demo", "-f", videoList[selectedVideoIndex].c_str()};
+  char *argv[] = {"./demo", "-f", const_cast<char*>(videoList[selectedVideoIndex].c_str())};
 
   RGBMatrix::Options matrix_options;
   rgb_matrix::RuntimeOptions runtime_opt;
@@ -1033,7 +1033,7 @@ static int ImageViewer()
 {
   //  needtouch, need to set argc and argv
   int argc = 3;
-  char *argv[] = {"./demo", "-f", imageList[selectedImageIndex].c_str()};  
+  char *argv[] = {"./demo", "-f", const_cast<char*>(imageList[selectedImageIndex].c_str())};  
   Magick::InitializeMagick(*argv);
 
   RGBMatrix::Options matrix_options;
