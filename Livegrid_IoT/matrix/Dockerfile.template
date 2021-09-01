@@ -45,3 +45,5 @@ COPY --from=build /usr/src/app/src src
 CMD src/draft_codes/main
 # CMD src/draft_codes/noise --led-rows=32 --led-cols=64 --led-slowdown-gpio=2 --led-limit-refresh=240 --led-gpio-mapping=adafruit-hat-pwm
 # CMD ./rpi-rgb-led-matrix/examples-api-use/utils/video-viewer --led-rows=32 --led-cols=64 --led-multiplexing=2 --led-slowdown-gpio=2 --led-gpio-mapping=adafruit-hat-pwm ./rpi-rgb-led-matrix/utils/earth_vid.mp4
+# CMD src/utils/video-viewer --led-rows=32 --led-cols=64 --led-multiplexing=2 --led-slowdown-gpio=2 --led-gpio-mapping=adafruit-hat-pwm src/utils/earth_vid.mp4
+# CMD src/utils/led-image-viewer --led-rows=32 --led-cols=64 --led-multiplexing=2 --led-slowdown-gpio=2 --led-gpio-mapping=adafruit-hat-pwm src/utils/1.jpg
