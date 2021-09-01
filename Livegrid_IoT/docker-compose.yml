@@ -1,0 +1,35 @@
+
+version: "2"
+
+volumes:
+    resin-data:
+
+services:
+  wifi-connect:
+    build: ./wifi-connect
+    network_mode: "host"
+    labels:
+      io.balena.features.dbus: '1'
+    cap_add:
+      - NET_ADMIN
+    environment:
+      DBUS_SYSTEM_BUS_ADDRESS: "unix:path=/host/run/dbus/system_bus_socket"
+
+  ble:
+    restart: always
+    privileged: true
+    network_mode: host
+    devices:
+      - "/dev/ttyAMA0:/dev/ttyAMA0"
+      - "/dev/vcio:/dev/vcio"
+    build: ./ble
+    volumes:
+        - 'resin-data:/data'
+
+  matrix:
+    privileged: true
+    build: ./matrix
+    depends_on:
+      - ble
+    volumes:
+        - 'resin-data:/data'
