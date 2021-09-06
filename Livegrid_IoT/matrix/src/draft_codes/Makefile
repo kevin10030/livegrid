@@ -1,7 +1,6 @@
-CFLAGS=-Wall -O3 -g -Wextra -Wno-unused-parameter
 CXXFLAGS=-O3 -W -Wall -Wextra -Wno-unused-parameter -D_FILE_OFFSET_BITS=64
-OBJECTS=demo-main.o main.o noise.o
-BINARIES=demo main noise 
+OBJECTS=main.o
+BINARIES=main
 
 # Where our library resides. You mostly only need to change the
 # RGB_LIB_DISTRIBUTION, this is where the library is checked out.
@@ -23,25 +22,15 @@ all : $(BINARIES)
 $(RGB_LIBRARY): FORCE
 	$(MAKE) -C $(RGB_LIBDIR)
 
-demo : demo-main.o $(RGB_LIBRARY)
-	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS) $(MAGICK_LDFLAGS) $(AV_LDFLAGS)
-
 main : main.o $(RGB_LIBRARY)
-	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS) $(MAGICK_LDFLAGS) $(AV_LDFLAGS)
-
-# minimal-example : minimal-example.o
-noise : noise.o
-
-# All the binaries that have the same name as the object file.q
-% : %.o $(RGB_LIBRARY)
-	$(CXX) $< -o $@ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) main.o -o $@ $(LDFLAGS) $(MAGICK_LDFLAGS) $(AV_LDFLAGS)
 
 %.o : %.cc
-	$(CXX) -I$(RGB_INCDIR) $(CXXFLAGS) $(MAGICK_CXXFLAGS) $(AV_CXXFLAGS) -c -o $@ $<
+	$(CXX) -I$(RGB_INCDIR) $(CXXFLAGS) -c -o $@ $<
 
-%.o : %.cpp compiler-flags
-	$(CC)  -I$(INCDIR) $(CFLAGS) -c -o $@ $<
-	
+main.o : main.cc
+	$(CXX) -I$(RGB_INCDIR) $(CXXFLAGS) $(MAGICK_CXXFLAGS) -c -o $@ $<
+
 clean:
 	rm -f $(OBJECTS) $(BINARIES)
 
